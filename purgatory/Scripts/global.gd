@@ -1,7 +1,10 @@
 extends Node
 
 # Delta Time
-var dtime
+var dtime = 60
+
+# Player
+var player : CharacterBody3D
 
 # UI
 var pause_menu : bool
