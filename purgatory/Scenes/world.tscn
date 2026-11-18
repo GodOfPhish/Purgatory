@@ -1,9 +1,62 @@
-[gd_scene load_steps=2 format=3 uid="uid://bl0htwtbpu3f8"]
+[gd_scene format=3 uid="uid://bl0htwtbpu3f8"]
 
 [ext_resource type="PackedScene" uid="uid://df4lyejj6byvh" path="res://Scenes/gui.tscn" id="1_a02cp"]
+[ext_resource type="PackedScene" uid="uid://drdec5fjuqte7" path="res://Scenes/player.tscn" id="2_go701"]
+[ext_resource type="PackedScene" uid="uid://cg2fmhk70mmhb" path="res://Scenes/enemy.tscn" id="3_5a7ea"]
 
-[node name="World" type="Node3D"]
+[sub_resource type="BoxMesh" id="BoxMesh_go701"]
+size = Vector3(1000, 0, 1000)
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[sub_resource type="BoxShape3D" id="BoxShape3D_go701"]
+size = Vector3(1000, 0.001, 1000)
 
-[node name="GUI" parent="CanvasLayer" instance=ExtResource("1_a02cp")]
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_go701"]
+sky_top_color = Color(0.65571827, 0.12747103, 9.62615e-08, 1)
+sky_horizon_color = Color(0, 0, 0, 1)
+sky_curve = 7.5
+sky_energy_multiplier = 2.5
+ground_horizon_color = Color(0, 0, 0, 1)
+sun_angle_max = 120.0
+
+[sub_resource type="Sky" id="Sky_5a7ea"]
+sky_material = SubResource("ProceduralSkyMaterial_go701")
+
+[sub_resource type="Environment" id="Environment_go701"]
+background_mode = 2
+background_energy_multiplier = 1.5
+sky = SubResource("Sky_5a7ea")
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_sky_contribution = 0.6
+ambient_light_energy = 1.5
+tonemap_exposure = 0.5
+glow_enabled = true
+
+[node name="World" type="Node3D" unique_id=2043315406]
+
+[node name="Player" parent="." unique_id=1881704427 instance=ExtResource("2_go701")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.001, 0)
+
+[node name="Floor" type="Node3D" parent="." unique_id=1227214977]
+
+[node name="FloorMesh" type="MeshInstance3D" parent="Floor" unique_id=2127663603]
+mesh = SubResource("BoxMesh_go701")
+skeleton = NodePath("../..")
+
+[node name="FloorCollision" type="StaticBody3D" parent="Floor" unique_id=2117829004]
+collision_layer = 2
+collision_mask = 29
+
+[node name="Collision" type="CollisionShape3D" parent="Floor/FloorCollision" unique_id=706387998]
+shape = SubResource("BoxShape3D_go701")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=733505076]
+environment = SubResource("Environment_go701")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2029111189]
+
+[node name="GUI" parent="CanvasLayer" unique_id=791955116 instance=ExtResource("1_a02cp")]
+mouse_filter = 2
+
+[node name="Enemy" parent="." unique_id=93589951 instance=ExtResource("3_5a7ea")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -25)
